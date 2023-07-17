@@ -1,0 +1,22 @@
+{
+  "recommendations": [
+    "naumovs.color-highlight",
+    "anseki.vscode-color",
+    "ms-vscode-remote.remote-containers",
+    "ms-azuretools.vscode-docker",
+    "github.copilot",
+    "github.copilot-chat",
+    "github.vscode-pull-request-github",
+    "github.remotehub",
+    "eamodio.gitlens",
+    "kisstkondoros.vscode-gutter-preview",
+    "esbenp.prettier-vscode",
+    "ms-vscode-remote.remote-ssh",
+    "ms-vscode-remote.remote-ssh-edit",
+    "ms-vscode.remote-explorer",
+    "ms-vscode.remote-repositories",
+    "vscode-icons-team.vscode-icons",
+    "wakatime.vscode-wakatime",
+    "ms-vscode-remote.remote-wsl"
+  ]
+}
