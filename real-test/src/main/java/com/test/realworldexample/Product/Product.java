@@ -16,10 +16,9 @@ public class Product {
     private String id;
     private String name;
     private String description;
-    private Float price;
+    private Double price;
     private String imageUrl;
     private String category;
-    private String[] sizes;
-    private final String[] availableSizes = { "XS", "S", "M", "L", "XL", "XXL" };
+    private String sizes;
     private final Date createdAt = new Date(System.currentTimeMillis());
 }

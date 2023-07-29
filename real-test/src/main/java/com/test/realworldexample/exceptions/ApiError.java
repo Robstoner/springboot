@@ -1,64 +1,44 @@
 package com.test.realworldexample.exceptions;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-class ApiError {
-
-    private HttpStatus status;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    private LocalDateTime timestamp;
-    private String message;
-    private String debugMessage;
-    private List<ApiSubError> subErrors;
-
-    private ApiError() {
-        timestamp = LocalDateTime.now();
-    }
-
-    ApiError(HttpStatus status) {
-        this();
-        this.status = status;
-    }
-
-    ApiError(HttpStatus status, Throwable ex) {
-        this();
-        this.status = status;
-        this.message = "Unexpected error";
-        this.debugMessage = ex.getLocalizedMessage();
-    }
-
-    ApiError(HttpStatus status, String message, Throwable ex) {
-        this();
-        this.status = status;
-        this.message = message;
-        this.debugMessage = ex.getLocalizedMessage();
-    }
-}
-
-abstract class ApiSubError {
-
-}
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-class ApiValidationError extends ApiSubError {
-    private String object;
-    private String field;
-    private Object rejectedValue;
+public class ApiError {
+    private String timestamp;
+    private HttpStatus status;
+    private Integer statusCode;
     private String message;
+    private List<String> errors;
 
-    ApiValidationError(String object, String message) {
-        this.object = object;
+    public ApiError(HttpStatus status, String message, List<String> errors) {
+        super();
+        this.timestamp = LocalDateTime.now().toString();
+        this.status = status;
+        this.statusCode = status.value();
+        this.message = message;
+        this.errors = errors;
+    }
+
+    public ApiError(HttpStatus status, String message, String error) {
+        super();
+        this.timestamp = LocalDateTime.now().toString();
+        this.status = status;
+        this.statusCode = status.value();
+        this.message = message;
+        this.errors = Arrays.asList(error);
+    }
+
+    public ApiError(HttpStatus status, String message) {
+        super();
+        this.timestamp = LocalDateTime.now().toString();
+        this.status = status;
+        this.statusCode = status.value();
         this.message = message;
     }
 }
