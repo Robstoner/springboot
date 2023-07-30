@@ -10,7 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.test.realworldexample.exceptions.ItemNotFoundException;
 import com.test.realworldexample.files.FileService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProductService {
     
     @Autowired
