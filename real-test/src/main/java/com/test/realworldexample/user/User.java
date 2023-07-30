@@ -2,6 +2,7 @@ package com.test.realworldexample.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,10 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role[] roles;
+
+    private String avatarUrl;
+
+    private final Date createdAt = new Date(System.currentTimeMillis());
 
     private final boolean enabled = true;
 
