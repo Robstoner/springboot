@@ -1,4 +1,4 @@
-package com.test.realworldexample.Product;
+package com.test.realworldexample.product;
 
 import java.util.Optional;
 
