@@ -1,4 +1,4 @@
-package com.test.realworldexample.security;
+package com.test.realworldexample.config;
 
 import java.io.IOException;
 

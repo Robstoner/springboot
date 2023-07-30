@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.test.realworldexample.config.JwtService;
 import com.test.realworldexample.exceptions.ItemNotFoundException;
 import com.test.realworldexample.user.Role;
 import com.test.realworldexample.user.User;

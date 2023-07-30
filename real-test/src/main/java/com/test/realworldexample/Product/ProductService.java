@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -27,16 +27,12 @@ public class ProductService {
     }
 
     public Product getProduct(String id) {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isPresent()) {
-            return product.get();
-        } else {
-            throw new ItemNotFoundException("Product not found");
-        }
+        return productRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Product not found"));
     }
 
     public byte[] getProductImage(String id) {
         Product product = getProduct(id);
+
         try {
             Resource image = fileService.load(product.getImageUrl());
 
@@ -46,7 +42,11 @@ public class ProductService {
         }
     }
 
-    public Product addProduct(MultipartFile file, Product entity) {
+    public Product addProduct(Product entity) {
+        return addProduct(entity, null);
+    }
+
+    public Product addProduct(Product entity, MultipartFile file) {
         if (file != null) {
             String fileName = fileService.save(file, "products");
             entity.setImageUrl(fileName);
@@ -58,9 +58,14 @@ public class ProductService {
     }
 
     public Product editProduct(String id, Product entity) {
-        Product product = productRepository.findById(id).get();
-        if (product == null || entity == null) {
-            return null;
+        return editProduct(id, entity, null);
+    }
+
+    public Product editProduct(String id, Product entity, MultipartFile file) {
+        Product product = getProduct(id);
+
+        if (entity == null) {
+            return product;
         }
 
         if (entity.getName() != null)
@@ -78,18 +83,26 @@ public class ProductService {
         if (entity.getSizes() != null)
             product.setSizes(entity.getSizes());
 
+        if (file != null) {
+            if (product.getImageUrl() != null) {
+                fileService.delete(product.getImageUrl());
+            }
+
+            String fileName = fileService.save(file, "products");
+            product.setImageUrl(fileName);
+        }
+
         productRepository.save(product);
 
         return product;
     }
 
     public void deleteProduct(String id) {
-        Product product = productRepository.findById(id).get();
-        if (product == null) {
-            return;
-        }
+        Product product = getProduct(id);
 
-        fileService.delete(product.getImageUrl());
+        if (product.getImageUrl() != null) {
+            fileService.delete(product.getImageUrl());
+        }
 
         productRepository.delete(product);
     }
