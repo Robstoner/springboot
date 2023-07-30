@@ -1,5 +1,6 @@
 package com.test.realworldexample.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,13 +19,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    @Autowired
     private final JwtAuthenticationFilter jwtAuthFilter;
+    @Autowired
     private final AuthenticationProvider authenticationProvider;
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
-            .authorizeHttpRequests((authorize) -> authorize.requestMatchers("").permitAll().anyRequest().authenticated())
+            .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
