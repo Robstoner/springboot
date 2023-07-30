@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.test.realworldexample.exceptions.MissingItemException;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductController {
 
@@ -36,21 +42,38 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{productId}/image", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getProductImage(@PathVariable("productId") String id) throws IOException{
-        byte[]image = productService.getProductImage(id);
+    public ResponseEntity<byte[]> getProductImage(@PathVariable("productId") String id) throws IOException {
+        byte[] image = productService.getProductImage(id);
+
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public @ResponseBody Product addProduct(@RequestParam("file") MultipartFile file, @RequestParam Map<String, String> body) {
+    public @ResponseBody Product addProduct(@RequestParam("file") MultipartFile file,
+            @RequestParam Map<String, String> body) {
         Product product = new Product();
-        product.setName(body.get("name"));
-        product.setDescription(body.get("description"));
-        product.setPrice(Double.parseDouble(body.get("price")));
-        product.setCategory(body.get("category"));
-        product.setSizes(body.get("sizes"));
-        
-        return productService.addProduct(file, product);
+        if (body.get("name") != null)
+            product.setName(body.get("name"));
+        else
+            throw new MissingItemException("name");
+        if (body.get("description") != null)
+            product.setDescription(body.get("description"));
+        else
+            throw new MissingItemException("description");
+        if (body.get("price") != null)
+            product.setPrice(Double.parseDouble(body.get("price")));
+        else
+            throw new MissingItemException("price");
+        if (body.get("category") != null)
+            product.setCategory(body.get("category"));
+        else
+            throw new MissingItemException("category");
+        if (body.get("sizes") != null)
+            product.setSizes(body.get("sizes"));
+        else
+            throw new MissingItemException("sizes");
+
+        return productService.addProduct(product, file);
     }
 
     @PutMapping(value = "/{productId}")

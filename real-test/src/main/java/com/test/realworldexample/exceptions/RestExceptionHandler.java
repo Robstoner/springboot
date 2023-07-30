@@ -32,6 +32,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(apiError);
     }
 
+    @ExceptionHandler(MissingItemException.class)
+    protected ResponseEntity<Object> handleMissingItem(MissingItemException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError apiError = new ApiError(status, ex.getMessage());
+
+        return ResponseEntity.status(status).body(apiError);
+    }
+
+    @ExceptionHandler(WrongArgumentException.class)
+    protected ResponseEntity<Object> handleWrongArgument(WrongArgumentException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError apiError = new ApiError(status, ex.getMessage());
+
+        return ResponseEntity.status(status).body(apiError);
+    }
+
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers,
             HttpStatusCode status, WebRequest request) {
