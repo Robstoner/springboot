@@ -101,6 +101,22 @@ public class UserService {
         return user;
     }
 
+    
+    public User changeAvatar(String id, MultipartFile file) {
+        User user = getUser(id);
+
+        if (user.getAvatarUrl() != null) {
+            fileService.delete(user.getAvatarUrl());
+        }
+
+        String fileName = fileService.save(file, "users");
+        user.setAvatarUrl(fileName);
+
+        userRepository.save(user);
+
+        return user;
+    }
+
     public void changePassword(String id, String password) {
         User user = getUser(id);
 

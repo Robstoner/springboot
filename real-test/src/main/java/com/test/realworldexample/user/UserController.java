@@ -40,7 +40,7 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @GetMapping(value = "/{userId}/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/{userId}/avatar", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getUserAvatar(@PathVariable("userId") String id) throws IOException {
         byte[] image = userService.getUserAvatar(id);
 
@@ -88,6 +88,12 @@ public class UserController {
             user.setAddress(body.get("address"));
 
         return userService.editUser(id, user, file);
+    }
+
+    @PutMapping(value = "/{userId}/avatar")
+    public User changeAvatar(@PathVariable("userId") String id,
+            @RequestParam("file") MultipartFile file) {
+        return userService.changeAvatar(id, file);
     }
 
     @PutMapping(value = "/{userId}/password")
