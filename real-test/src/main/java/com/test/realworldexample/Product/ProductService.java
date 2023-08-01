@@ -1,7 +1,5 @@
 package com.test.realworldexample.product;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -9,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.test.realworldexample.exceptions.ItemNotFoundException;
 import com.test.realworldexample.files.FileService;
+import com.test.realworldexample.user.User;
+import com.test.realworldexample.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private FileService fileService;
 
@@ -105,5 +106,15 @@ public class ProductService {
         }
 
         productRepository.delete(product);
+    }
+
+    public Product addUserToProduct(String id, String string) {
+        Product product = getProduct(id);
+        User user = userRepository.findById(string).orElseThrow(() -> new ItemNotFoundException("User not found"));
+System.out.println("user: " + user);
+        product.setUser(user);
+        productRepository.save(product);
+System.out.println("product: " + product);
+        return product;
     }
 }
