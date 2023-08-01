@@ -35,6 +35,12 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("User not found"));
     }
 
+    public List<Product> getUserProducts(String id) {
+        User user = getUser(id);
+
+        return user.getProducts();
+    }
+
     public byte[] getUserAvatar(String id) {
         User user = getUser(id);
 
@@ -106,14 +112,14 @@ public class UserService {
 
         return user;
     }
-    
+
     public User addProducts(String id, List<String> products) {
         User user = getUser(id);
         Iterable<Product> productsList = productRepository.findAllById(products);
-        
+
         user.addProducts(productsList);
         userRepository.save(user);
-        
+
         return user;
     }
 

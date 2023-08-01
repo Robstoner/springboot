@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.test.realworldexample.exceptions.MissingItemException;
 import com.test.realworldexample.exceptions.WrongArgumentException;
+import com.test.realworldexample.product.Product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,11 @@ public class UserController {
         byte[] image = userService.getUserAvatar(id);
 
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+    }
+
+    @GetMapping("/{userId}/products")
+    public List<Product> getUserProducts(@PathVariable("userId") String id) {
+        return userService.getUserProducts(id);
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
