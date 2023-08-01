@@ -1,5 +1,7 @@
 package com.test.realworldexample.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.test.realworldexample.exceptions.ItemNotFoundException;
 import com.test.realworldexample.files.FileService;
+import com.test.realworldexample.product.Product;
+import com.test.realworldexample.product.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +20,8 @@ public class UserService {
 
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final ProductRepository productRepository;
     @Autowired
     private final FileService fileService;
     @Autowired
@@ -27,6 +33,12 @@ public class UserService {
 
     public User getUser(String id) {
         return userRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("User not found"));
+    }
+
+    public List<Product> getUserProducts(String id) {
+        User user = getUser(id);
+
+        return user.getProducts();
     }
 
     public byte[] getUserAvatar(String id) {
@@ -101,6 +113,31 @@ public class UserService {
         return user;
     }
 
+    public User addProducts(String id, List<String> products) {
+        User user = getUser(id);
+        Iterable<Product> productsList = productRepository.findAllById(products);
+
+        user.addProducts(productsList);
+        userRepository.save(user);
+
+        return user;
+    }
+
+    public User changeAvatar(String id, MultipartFile file) {
+        User user = getUser(id);
+
+        if (user.getAvatarUrl() != null) {
+            fileService.delete(user.getAvatarUrl());
+        }
+
+        String fileName = fileService.save(file, "users");
+        user.setAvatarUrl(fileName);
+
+        userRepository.save(user);
+
+        return user;
+    }
+
     public void changePassword(String id, String password) {
         User user = getUser(id);
 
@@ -122,4 +159,5 @@ public class UserService {
 
         userRepository.delete(user);
     }
+
 }

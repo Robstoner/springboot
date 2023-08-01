@@ -1,6 +1,8 @@
 package com.test.realworldexample.user;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.test.realworldexample.exceptions.MissingItemException;
 import com.test.realworldexample.exceptions.WrongArgumentException;
+import com.test.realworldexample.product.Product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,11 +43,16 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @GetMapping(value = "/{userId}/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/{userId}/avatar", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getUserAvatar(@PathVariable("userId") String id) throws IOException {
         byte[] image = userService.getUserAvatar(id);
 
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+    }
+
+    @GetMapping("/{userId}/products")
+    public List<Product> getUserProducts(@PathVariable("userId") String id) {
+        return userService.getUserProducts(id);
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -88,6 +96,20 @@ public class UserController {
             user.setAddress(body.get("address"));
 
         return userService.editUser(id, user, file);
+    }
+
+    @PutMapping(value = "/{userId}/products")
+    public User addProducts(@PathVariable("userId") String id, @RequestBody Map<String, String> body) {
+        if (body.get("products") != null) {
+            List<String> products = Arrays.asList(body.get("products").split(","));
+            return userService.addProducts(id, products);
+        } else
+            throw new MissingItemException("products");
+    }
+
+    @PutMapping(value = "/{userId}/avatar")
+    public User changeAvatar(@PathVariable("userId") String id, @RequestParam("file") MultipartFile file) {
+        return userService.changeAvatar(id, file);
     }
 
     @PutMapping(value = "/{userId}/password")

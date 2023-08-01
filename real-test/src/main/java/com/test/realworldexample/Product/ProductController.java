@@ -81,6 +81,14 @@ public class ProductController {
         return productService.editProduct(id, entity);
     }
 
+    @PutMapping(value = "/{productId}/user")
+    public Product addUserToProduct(@PathVariable("productId") String id, @RequestBody Map<String, String> body) {
+        if (body.get("userId") != null) 
+            return productService.addUserToProduct(id, body.get("userId"));
+        else
+            throw new MissingItemException("userId");
+    }
+
     @DeleteMapping(value = "/{productId}")
     public void deleteProduct(@PathVariable("productId") String id) {
         productService.deleteProduct(id);
