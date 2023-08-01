@@ -1,6 +1,8 @@
 package com.test.realworldexample.user;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,9 +92,17 @@ public class UserController {
         return userService.editUser(id, user, file);
     }
 
+    @PutMapping(value = "/{userId}/products")
+    public User addProducts(@PathVariable("userId") String id, @RequestBody Map<String, String> body) {
+        if (body.get("products") != null) {
+            List<String> products = Arrays.asList(body.get("products").split(","));
+            return userService.addProducts(id, products);
+        } else
+            throw new MissingItemException("products");
+    }
+
     @PutMapping(value = "/{userId}/avatar")
-    public User changeAvatar(@PathVariable("userId") String id,
-            @RequestParam("file") MultipartFile file) {
+    public User changeAvatar(@PathVariable("userId") String id, @RequestParam("file") MultipartFile file) {
         return userService.changeAvatar(id, file);
     }
 

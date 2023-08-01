@@ -46,6 +46,9 @@ public class Product {
     private final Date createdAt = new Date(System.currentTimeMillis());
 
     public String getUserId() {
-        return user.getId();
+        if (user != null)
+            return user.getId();
+        else
+            return null;
     }
 }

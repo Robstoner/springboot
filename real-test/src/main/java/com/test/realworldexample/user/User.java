@@ -43,12 +43,21 @@ public class User implements UserDetails {
 
     private String avatarUrl;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     private final Date createdAt = new Date(System.currentTimeMillis());
 
     private final boolean enabled = true;
+
+    public void addProducts(Iterable<Product> products) {
+
+        for (Product product : products) {
+            product.setUser(this);
+            this.products.add(product);
+        }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
