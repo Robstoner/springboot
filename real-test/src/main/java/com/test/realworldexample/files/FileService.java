@@ -34,7 +34,8 @@ public class FileService {
                 Files.createDirectories(root.resolve(folder));
             }
             try {
-                String filename = file.getOriginalFilename() + System.currentTimeMillis();
+                String[] split = file.getOriginalFilename().split("\\.");
+                String filename = split[0] + "-" + System.currentTimeMillis() + "." + split[1];
 
                 Files.copy(file.getInputStream(), this.root.resolve(folder).resolve(filename));
 
