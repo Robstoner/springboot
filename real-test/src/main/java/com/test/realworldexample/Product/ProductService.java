@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductService implements ProductServiceI{
 
     @Autowired
     private ProductRepository productRepository;
@@ -111,10 +111,10 @@ public class ProductService {
     public Product addUserToProduct(String id, String string) {
         Product product = getProduct(id);
         User user = userRepository.findById(string).orElseThrow(() -> new ItemNotFoundException("User not found"));
-System.out.println("user: " + user);
+
         product.setUser(user);
         productRepository.save(product);
-System.out.println("product: " + product);
+
         return product;
     }
 }

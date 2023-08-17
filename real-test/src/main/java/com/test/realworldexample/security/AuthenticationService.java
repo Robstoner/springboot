@@ -16,10 +16,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationService implements AuthenticationServiceI{
 
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final TokenRepository tokenRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
     @Autowired
@@ -59,4 +61,12 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+    public void logout(String token) {
+        Token tokenObj = tokenRepository.findById(token)
+                .orElseThrow(() -> new ItemNotFoundException("Token not found"));
+        
+        tokenObj.setExpired(true);
+        tokenRepository.save(tokenObj);
+    } 
 }
