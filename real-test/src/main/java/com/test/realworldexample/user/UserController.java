@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class UserController {
 
     @Autowired
-    private final UserService userService;
+    private final UserServiceI userService;
 
     @GetMapping("/")
     public Iterable<User> getAllUsers() {

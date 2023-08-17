@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceI productService;
 
     @GetMapping(value = "/")
     public @ResponseBody Iterable<Product> getProducts() {

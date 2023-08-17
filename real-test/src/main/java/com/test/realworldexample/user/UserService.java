@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserServiceI {
 
     @Autowired
     private final UserRepository userRepository;
@@ -159,5 +159,4 @@ public class UserService {
 
         userRepository.delete(user);
     }
-
 }

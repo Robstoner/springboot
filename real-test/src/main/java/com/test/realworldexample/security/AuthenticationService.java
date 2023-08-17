@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationService implements AuthenticationServiceI{
 
     @Autowired
     private final UserRepository userRepository;
