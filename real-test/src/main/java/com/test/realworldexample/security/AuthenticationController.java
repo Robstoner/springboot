@@ -1,5 +1,7 @@
 package com.test.realworldexample.security;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,5 +28,15 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authenticationService.login(request));
 
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody Map<String, String> body) {
+        if (!body.containsKey("token")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        authenticationService.logout(body.get("token"));
+        return ResponseEntity.ok().build();
     }
 }
