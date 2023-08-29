@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.test.realworldexample.exceptions.ItemNotFoundException;
-import com.test.realworldexample.files.FileService;
+import com.test.realworldexample.files.FileServiceI;
 import com.test.realworldexample.user.User;
 import com.test.realworldexample.user.UserRepository;
 
@@ -21,7 +21,7 @@ public class ProductService implements ProductServiceI{
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private FileService fileService;
+    private FileServiceI fileService;
 
     public Iterable<Product> getProducts() {
         return productRepository.findAll();

@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.realworldexample.files.FileService;
+import com.test.realworldexample.files.FileServiceI;
 
 import jakarta.annotation.Resource;
 
@@ -12,7 +12,7 @@ import jakarta.annotation.Resource;
 @RestController
 public class RealWorldExampleApplication {
 	@Resource
-	FileService storageService;
+	FileServiceI storageService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RealWorldExampleApplication.class, args);

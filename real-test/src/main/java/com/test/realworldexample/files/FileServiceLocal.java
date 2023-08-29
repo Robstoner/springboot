@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.annotation.PostConstruct;
 
 @Service
-public class FileService {
+public class FileServiceLocal implements FileServiceI{
 
     private final Path root = Paths.get("uploads");
 
