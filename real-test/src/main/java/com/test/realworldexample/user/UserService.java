@@ -45,7 +45,7 @@ public class UserService implements UserServiceI {
         User user = getUser(id);
 
         try {
-            return fileService.load(user.getAvatarUrl()).getContentAsByteArray();
+            return fileService.load(user.getAvatarUrl());
         } catch (Exception e) {
             throw new ItemNotFoundException("User avatar not found or corrupted");
         }

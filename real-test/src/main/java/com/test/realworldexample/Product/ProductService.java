@@ -1,7 +1,6 @@
 package com.test.realworldexample.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,9 +34,9 @@ public class ProductService implements ProductServiceI{
         Product product = getProduct(id);
 
         try {
-            Resource image = fileService.load(product.getImageUrl());
+            byte[] image = fileService.load(product.getImageUrl());
 
-            return image.getContentAsByteArray();
+            return image;
         } catch (Exception e) {
             throw new ItemNotFoundException("Product image not found or corrupted");
         }

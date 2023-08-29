@@ -50,12 +50,12 @@ public class FileServiceLocal implements FileServiceI{
 
     }
 
-    public Resource load(String filename) {
+    public byte[] load(String filename) {
         try {
             Path file = root.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
-                return resource;
+                return resource.getContentAsByteArray();
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
