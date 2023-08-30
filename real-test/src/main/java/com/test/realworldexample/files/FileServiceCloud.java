@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
-@Service
+// @Service
 public class FileServiceCloud implements FileServiceI {
 
     private final S3Client s3Client;
