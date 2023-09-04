@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 @Entity
 @Data
@@ -41,9 +42,13 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role[] roles;
 
+    @Enumerated(EnumType.STRING)
+    @Default
+    private Provider provider = Provider.LOCAL;
+
     private String avatarUrl;
 
-    @Builder.Default
+    @Default
     @OneToMany(mappedBy = "user")
     private List<Product> products = new ArrayList<>();
 
