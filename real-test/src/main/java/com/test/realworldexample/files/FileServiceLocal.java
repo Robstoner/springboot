@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.annotation.PostConstruct;
 
 @Service
-public class FileService {
+public class FileServiceLocal implements FileServiceI{
 
     private final Path root = Paths.get("uploads");
 
@@ -50,12 +50,12 @@ public class FileService {
 
     }
 
-    public Resource load(String filename) {
+    public byte[] load(String filename) {
         try {
             Path file = root.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
-                return resource;
+                return resource.getContentAsByteArray();
             } else {
                 throw new RuntimeException("Could not read the file!");
             }

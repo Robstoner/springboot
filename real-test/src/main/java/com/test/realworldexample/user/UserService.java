@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.test.realworldexample.exceptions.ItemNotFoundException;
-import com.test.realworldexample.files.FileService;
+import com.test.realworldexample.files.FileServiceI;
 import com.test.realworldexample.product.Product;
 import com.test.realworldexample.product.ProductRepository;
 
@@ -23,7 +23,7 @@ public class UserService implements UserServiceI {
     @Autowired
     private final ProductRepository productRepository;
     @Autowired
-    private final FileService fileService;
+    private final FileServiceI fileService;
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
@@ -45,7 +45,7 @@ public class UserService implements UserServiceI {
         User user = getUser(id);
 
         try {
-            return fileService.load(user.getAvatarUrl()).getContentAsByteArray();
+            return fileService.load(user.getAvatarUrl());
         } catch (Exception e) {
             throw new ItemNotFoundException("User avatar not found or corrupted");
         }
