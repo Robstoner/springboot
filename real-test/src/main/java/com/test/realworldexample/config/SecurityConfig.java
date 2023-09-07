@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.test.realworldexample.oauth.CustomOAuth2User;
 import com.test.realworldexample.oauth.CustomOAuth2UserService;
 import com.test.realworldexample.user.UserService;
 
@@ -42,26 +41,29 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((csrf) -> csrf.disable())
-                .authorizeHttpRequests((authorize) -> authorize.requestMatchers("/auth/**", "/oauth2/**").permitAll()
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/auth/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated())
-                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .oauth2Login((oauth2) -> oauth2.userInfoEndpoint((userInfoEndpoint) -> 
-                        userInfoEndpoint.userService(oauthUserService))
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpoint) -> userInfoEndpoint
+                                .userService(oauthUserService))
                         .successHandler(new AuthenticationSuccessHandler() {
-                            
+
                             @Override
                             public void onAuthenticationSuccess(HttpServletRequest request,
                                     HttpServletResponse response,
                                     Authentication authentication) throws IOException, ServletException {
-                                        DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
+                                DefaultOidcUser oauthUser = (DefaultOidcUser) authentication.getPrincipal();
 
-                                        userService.processOAuthPostLogin(oauthUser.getEmail());
+                                userService.processOAuthPostLogin(oauthUser.getEmail());
 
-                                        response.sendRedirect("/");
-                                    }
+                                response.sendRedirect("/");
+                            }
                         }))
-                
+
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
