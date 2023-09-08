@@ -1,6 +1,10 @@
 # Personal Spring Boot playground
 
+A collection of Spring Boot projects I created and looked at while learning.
+
 ## real-test
+
+Moved repository to [Backend](https://github.com/Robstoner/backend)
 
 An example Spring Boot application with users, products, authentication and file upload built on Maven.
 
