@@ -159,4 +159,19 @@ public class UserService implements UserServiceI {
 
         userRepository.delete(user);
     }
+
+    public void processOAuthPostLogin(String email) {
+        User existUser = userRepository.findByEmail(email).orElse(null);
+
+        if (existUser == null) {
+
+            User newUser = User.builder()
+                    .email(email)
+                    .roles(new Role[] { Role.USER })
+                    .provider(Provider.GOOGLE)
+                    .build();
+
+            userRepository.save(newUser);
+        }
+    }
 }

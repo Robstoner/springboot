@@ -30,6 +30,10 @@ public class AuthenticationController {
 
     }
 
+    @RequestMapping("oauth2")
+    public void oauth2Login() {
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody Map<String, String> body) {
         if (!body.containsKey("token")) {

@@ -5,5 +5,7 @@ public interface AuthenticationServiceI {
 
     public AuthenticationResponse login(LoginRequest request);
 
+    // public AuthenticationResponse oauth2Login(String token);
+
     public void logout(String token);
 }
